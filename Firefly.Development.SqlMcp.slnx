@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Firefly.Development.SqlMcp/Firefly.Development.SqlMcp.csproj" />
+  </Folder>
+</Solution>
