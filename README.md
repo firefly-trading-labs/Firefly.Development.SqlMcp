@@ -11,21 +11,34 @@ A read-only SQL MCP server for querying UAT-RAIDDB from Claude Code.
 
 ## Setup
 
-### Option 1: Run from source
+The server runs as a local HTTP server on `localhost:3001`. You need to start it before Claude Code can connect.
+
+### 1. Start the server
 
 ```bash
-claude mcp add sql-uat -- dotnet run --project C:\path\to\src\Firefly.Development.SqlMcp\Firefly.Development.SqlMcp.csproj
+dotnet run --project src/Firefly.Development.SqlMcp
 ```
 
-### Option 2: Install as dotnet tool
+The server will listen on `http://localhost:3001`. Keep this terminal open.
 
-> **Note:** This approach is not yet tested — use Option 1 for now.
+### 2. Register in Claude Code
+
+Add to your `~/.claude.json` under `mcpServers`:
+
+```json
+"sql-uat": {
+  "type": "http",
+  "url": "http://localhost:3001"
+}
+```
+
+Or via CLI:
 
 ```bash
-dotnet pack src/Firefly.Development.SqlMcp
-dotnet tool install --global --add-source src/Firefly.Development.SqlMcp/nupkg Firefly.Development.SqlMcp
-claude mcp add sql-uat -- Firefly.Development.SqlMcp
+claude mcp add -s user -t http sql-uat http://localhost:3001
 ```
+
+Then restart Claude Code or run `/mcp` to connect.
 
 ## Tools
 
