@@ -19,6 +19,8 @@ claude mcp add sql-uat -- dotnet run --project C:\path\to\src\Firefly.Developmen
 
 ### Option 2: Install as dotnet tool
 
+> **Note:** This approach is not yet tested — use Option 1 for now.
+
 ```bash
 dotnet pack src/Firefly.Development.SqlMcp
 dotnet tool install --global --add-source src/Firefly.Development.SqlMcp/nupkg Firefly.Development.SqlMcp
