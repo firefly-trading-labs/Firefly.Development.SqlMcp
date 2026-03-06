@@ -49,6 +49,19 @@ Then restart Claude Code or run `/mcp` to connect.
 | `list_tables` | List tables/views in a database (with optional filter) |
 | `describe_table` | Show column definitions for a table or view |
 
+## Why build a custom MCP server?
+
+No official SQL Server MCP server exists that meets all our requirements. Here's why alternatives were rejected:
+
+| Approach | Why not |
+|----------|---------|
+| `sqlcmd` via Bash | Accepts any SQL — no way to enforce SELECT-only at the Claude Code permission level |
+| Community MCP servers | All random GitHub projects, not from trusted companies. Inconsistent Windows Auth support |
+| Microsoft DAB (Data API Builder) | Requires explicit entity registration per table — maintenance burden. Complex RBAC config |
+| npx-based SQL packages | Even less trustworthy than community GitHub projects |
+
+This custom server is ~100 lines of code, zero config, native Windows Auth, and uses Microsoft's official ScriptDom AST parser for robust SELECT-only enforcement.
+
 ## Safety
 
 The ScriptDom AST parser catches everything string matching can't:

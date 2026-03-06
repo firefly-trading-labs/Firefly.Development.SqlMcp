@@ -12,8 +12,10 @@ public class SqlTools
     private static readonly TSql160Parser Parser = new(false);
     private const string Server = "UAT-RAIDDB";
 
+    private const int TimeoutSeconds = 10;
+
     private static string ConnectionString(string database) =>
-        $"Server={Server};Database={database};Trusted_Connection=True;TrustServerCertificate=True;";
+        $"Server={Server};Database={database};Trusted_Connection=True;TrustServerCertificate=True;Connect Timeout={TimeoutSeconds};";
 
     private static void ValidateSelectOnly(string sql)
     {
@@ -102,7 +104,7 @@ public class SqlTools
 
         await using var conn = new SqlConnection(ConnectionString(database));
         await conn.OpenAsync();
-        await using var cmd = new SqlCommand(sql, conn) { CommandTimeout = 30 };
+        await using var cmd = new SqlCommand(sql, conn) { CommandTimeout = TimeoutSeconds };
         await using var reader = await cmd.ExecuteReaderAsync();
         return ToMarkdownTable(reader);
     }
@@ -114,7 +116,7 @@ public class SqlTools
 
         await using var conn = new SqlConnection(ConnectionString("master"));
         await conn.OpenAsync();
-        await using var cmd = new SqlCommand(sql, conn);
+        await using var cmd = new SqlCommand(sql, conn) { CommandTimeout = TimeoutSeconds };
         await using var reader = await cmd.ExecuteReaderAsync();
         return ToMarkdownTable(reader);
     }
@@ -131,7 +133,7 @@ public class SqlTools
 
         await using var conn = new SqlConnection(ConnectionString(database));
         await conn.OpenAsync();
-        await using var cmd = new SqlCommand(sql, conn);
+        await using var cmd = new SqlCommand(sql, conn) { CommandTimeout = TimeoutSeconds };
         await using var reader = await cmd.ExecuteReaderAsync();
         return ToMarkdownTable(reader);
     }
@@ -165,7 +167,7 @@ public class SqlTools
 
         await using var conn = new SqlConnection(ConnectionString(database));
         await conn.OpenAsync();
-        await using var cmd = new SqlCommand(sql, conn);
+        await using var cmd = new SqlCommand(sql, conn) { CommandTimeout = TimeoutSeconds };
         cmd.Parameters.AddWithValue("@schema", schema);
         cmd.Parameters.AddWithValue("@table", tableName);
         await using var reader = await cmd.ExecuteReaderAsync();
